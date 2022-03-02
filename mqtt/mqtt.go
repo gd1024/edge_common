@@ -7,13 +7,12 @@ import (
 )
 
 type MqttConf struct {
-	InsName  string          `json:"ins_name"`
-	ClientId string          `json:"client_id"`
-	Username string          `json:"username"`
-	Password string          `json:"password"`
-	Addr     string          `json:"addr"`
-	Port     string          `json:"port"`
-	SubOpts  []SubscribeOpts `json:"sub_opts"`
+	InsName  string `json:"ins_name"`
+	ClientId string `json:"client_id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Addr     string `json:"addr"`
+	Port     string `json:"port"`
 }
 
 type SubscribeOpts struct {
@@ -22,7 +21,7 @@ type SubscribeOpts struct {
 	Callback func(client mqtt.Client, msg mqtt.Message)
 }
 
-func InitMqtt(confs []MqttConf) {
+func InitMqtt(confs []MqttConf, subOpts map[string][]SubscribeOpts) {
 	for k := range confs {
 		conf := confs[k]
 		opts := mqtt.NewClientOptions()
@@ -42,7 +41,7 @@ func InitMqtt(confs []MqttConf) {
 			fmt.Println("OnClose-------:"+conf.InsName, err)
 		}
 
-		registerMqttClient(conf, opts, conf.SubOpts)
+		registerMqttClient(conf, opts, subOpts[conf.InsName])
 	}
 }
 

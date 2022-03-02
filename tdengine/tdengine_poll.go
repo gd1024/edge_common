@@ -11,22 +11,22 @@ type TdEngine struct {
 	TableName string
 }
 
-func (pg *TdEngine) Conn() {
-	if pg.InsName == "" {
-		panic("conn tdEngine err : ins name don't is empty")
+func (td *TdEngine) Conn() {
+	if td.InsName == "" {
+		panic("conn td engine err : ins name don't is empty")
 	}
 
-	if pg.DbName == "" {
-		panic("conn tdEngine err : db name don't is empty")
+	if td.DbName == "" {
+		panic("conn td engine err : db name don't is empty")
 	}
 
-	if pg.TableName == "" {
-		panic("conn tdEngine err : table name don't is empty")
+	if td.TableName == "" {
+		panic("conn td engine err : table name don't is empty")
 	}
 
-	if conn, ok := tdEnginePool[pg.InsName]; ok {
-		pg.Db = conn
+	if conn, ok := tdEnginePool[td.InsName]; ok {
+		td.Db = conn
 	} else {
-		panic("conn tdEngine err : ins name not found")
+		panic("conn td engine err : ins name not found")
 	}
 }
