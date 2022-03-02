@@ -22,8 +22,8 @@ func (e *engine) RegisterLogger(logPath string) {
 	logger2.InitLog(logPath)
 }
 
-func (e *engine) RegisterMqtt(confs []mqtt.MqttConf, sub []mqtt.SubscribeOpts) {
-	mqtt.InitMqtt(confs, sub)
+func (e *engine) RegisterMqtt(confs []mqtt.MqttConf) {
+	mqtt.InitMqtt(confs)
 }
 
 func (e *engine) RegisterPgsql(pgConf []pgsql.PgConf) {
