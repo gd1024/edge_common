@@ -31,6 +31,6 @@ func (e *engine) RegisterPgsql(pgConf []pgsql.PgConf) {
 	pgsql.InitPgsql(pgConf)
 }
 
-func (e *engine) InitTdEngine(tdConf []tdengine.TdEngineConf) {
+func (e *engine) RegisterTdEngine(tdConf []tdengine.TdEngineConf) {
 	tdengine.InitTdEngine(tdConf)
 }
