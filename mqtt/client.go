@@ -7,19 +7,19 @@ import (
 	"time"
 )
 
-var mqttClients map[string]*MqttClient
+var mqttClients map[string]*Client
 
 func init() {
-	mqttClients = make(map[string]*MqttClient)
+	mqttClients = make(map[string]*Client)
 }
 
-type MqttClient struct {
+type Client struct {
 	client mqtt.Client
 	opts   []SubscribeOpts
-	conf   MqttConf
+	conf   Conf
 }
 
-func (mc *MqttClient) Publish(topic string, msg MqttMsgEntity, qos byte, retained bool) (int64, error) {
+func (mc *Client) Publish(topic string, msg Msg, qos byte, retained bool) (int64, error) {
 	if msg.MsgId == 0 {
 		msg.MsgId = time.Now().UnixNano()
 	}
@@ -33,11 +33,11 @@ func (mc *MqttClient) Publish(topic string, msg MqttMsgEntity, qos byte, retaine
 	return msg.MsgId, nil
 }
 
-func GetClient(insName string) (mc *MqttClient) {
+func GetClient(insName string) (mc *Client) {
 	return mqttClients[insName]
 }
 
-func (mc *MqttClient) subscribe() error {
+func (mc *Client) subscribe() error {
 
 	var token mqtt.Token
 	var err error

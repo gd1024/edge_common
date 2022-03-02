@@ -11,6 +11,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.18.1 // indirect
 	github.com/spf13/viper v1.10.1
+	github.com/taosdata/driver-go/v2 v2.0.1-0.20220222122038-174cb6c68124
 	go.uber.org/zap v1.17.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )

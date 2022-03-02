@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-type MqttConf struct {
+type Conf struct {
 	InsName  string `json:"ins_name"`
 	ClientId string `json:"client_id"`
 	Username string `json:"username"`
@@ -21,7 +21,7 @@ type SubscribeOpts struct {
 	Callback func(client mqtt.Client, msg mqtt.Message)
 }
 
-func InitMqtt(confs []MqttConf, subOpts map[string][]SubscribeOpts) {
+func InitMqtt(confs []Conf, subOpts map[string][]SubscribeOpts) {
 	for k := range confs {
 		conf := confs[k]
 		opts := mqtt.NewClientOptions()
@@ -45,9 +45,9 @@ func InitMqtt(confs []MqttConf, subOpts map[string][]SubscribeOpts) {
 	}
 }
 
-func registerMqttClient(conf MqttConf, mqttOpts *mqtt.ClientOptions, opts []SubscribeOpts) {
+func registerMqttClient(conf Conf, mqttOpts *mqtt.ClientOptions, opts []SubscribeOpts) {
 
-	c := &MqttClient{
+	c := &Client{
 		client: mqtt.NewClient(mqttOpts),
 		opts:   opts,
 		conf:   conf,

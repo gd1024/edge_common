@@ -8,7 +8,7 @@ import (
 
 
 
-type PgConf struct {
+type Conf struct {
 	InsName      string `json:"ins_name"`
 	Addr         string `json:"addr"`
 	Port         int    `json:"port"`
@@ -21,7 +21,7 @@ type PgConf struct {
 	MaxOpenConns int    `json:"max_open_conns"`
 }
 
-func InitPgsql(pgConf []PgConf) {
+func InitPgsql(pgConf []Conf) {
 
 	for _, pgsqlConfig := range pgConf {
 

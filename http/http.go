@@ -2,39 +2,54 @@ package http
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net"
 	"net/http"
+	"sync"
 	"time"
 )
 
-func InitHttp(addr string, ctx context.Context, registerRouter func(router *gin.Engine), middleware ...gin.HandlerFunc) {
+type Conf struct {
+	Addr            string
+	ShutdownTimeout time.Duration
+	Router          func(router *gin.Engine)
+	Wg              *sync.WaitGroup
+}
+
+func InitHttp(conf Conf, middleware ...gin.HandlerFunc) {
 	engine := gin.New()
 
 	// sfsfsdsf
 	engine.Use(middleware...)
 
 	//注册路由
-	registerRouter(engine)
+	conf.Router(engine)
 
 	//监听地址
-	l, err := net.Listen("tcp4", addr)
+	l, err := net.Listen("tcp4", conf.Addr)
 	if err != nil {
 		panic("init http server listen fail :" + err.Error())
 	}
 
 	//server配置
 	server := &http.Server{
-		Addr:         addr,
+		Addr:         conf.Addr,
 		Handler:      engine,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
 	go func() {
-		//监听端口
-		_ = server.Serve(l)
+		conf.Wg.Wait()
+		ctx, cancel := context.WithTimeout(context.Background(), conf.ShutdownTimeout)
+		defer cancel()
+		err = server.Shutdown(ctx)
+		fmt.Println("----- serve shutdown", time.Now().Format("2006-01-02 15:04:05.999999999"), err)
 	}()
 
-	_ = server.Shutdown(ctx)
+	//监听端口
+	err = server.Serve(l)
+	fmt.Println("----- serve close", time.Now().Format("2006-01-02 15:04:05.999999999"), err)
+
 }
